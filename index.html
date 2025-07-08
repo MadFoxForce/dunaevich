@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Union Affiliate — Projects By Maksim Dunaev</title>
+  <link rel="preload" href="../Unidocs/img/icon.png" as="image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #ff7a1a;
+      --dark: #232323;
+      --gray: #333;
+      --light-gray: #444;
+      --white: #fff;
+      --transition: 0.3s cubic-bezier(.4,2,.6,1);
+      --gradient: linear-gradient(135deg, #ff7a1a, #ff9f4a);
+      --overlay-bg: rgba(20,20,20,0.75);
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: var(--dark);
+      color: var(--white);
+      font-family: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    body.loaded .loader {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.7s;
+    }
+    .loader {
+      position: fixed;
+      z-index: 1000;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.7s;
+    }
+    .loader-title {
+      font-size: 4rem;
+      font-weight: 900;
+      font-family: 'Inter', sans-serif;
+      color: var(--orange);
+      letter-spacing: 0.1em;
+      margin-bottom: 2rem;
+      text-shadow: 0 2px 16px #000a;
+    }
+    .loader-bar {
+      width: 320px;
+      height: 8px;
+      background: var(--gray);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px #0006;
+    }
+    .loader-bar-inner {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--orange), #ffb86b);
+      border-radius: 4px;
+      transition: width 0.2s;
+    }
+    .main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.7s;
+    }
+    body.loaded .main {
+      opacity: 1;
+      pointer-events: auto;
+      transition-delay: 0.2s;
+    }
+    
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--orange);
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: float 6s infinite linear;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.3;
+      }
+      90% {
+        opacity: 0.3;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    .title {
+      font-size: 3.5rem;
+      font-weight: 900;
+      font-family: 'Inter', sans-serif;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-top: 60px;
+      margin-bottom: 0.5em;
+      letter-spacing: 0.04em;
+      text-align: center;
+      text-shadow: 0 2px 16px #000a;
+      position: relative;
+      z-index: 2;
+    }
+    .subtitle {
+      font-size: 2.2rem;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      color: var(--white);
+      margin-bottom: 2.5em;
+      letter-spacing: 0.03em;
+      text-align: center;
+      text-shadow: 0 2px 8px #0008;
+      position: relative;
+      z-index: 2;
+    }
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      max-width: 1100px;
+      margin: 0 auto 60px auto;
+      width: 100%;
+      justify-items: center;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+    .project {
+      width: 220px;
+      height: 220px;
+      background: var(--gray);
+      border-radius: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 32px #0004;
+      position: relative;
+      cursor: pointer;
+      transition: box-shadow var(--transition), border var(--transition), transform var(--transition);
+      border: 3px solid transparent;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(40px) scale(0.97);
+    }
+    
+    .project.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      transition: opacity 0.7s, transform 0.7s;
+    }
+    .project.unidocs {
+      background: var(--dark);
+      border: 3px solid var(--gray);
+      position: relative;
+      z-index: 1;
+      overflow: visible;
+    }
+    .project.unidocs:hover {
+      border: 3px solid var(--orange);
+      box-shadow: 0 0 0 6px #ff7a1a33, 0 4px 32px #0006;
+      z-index: 2;
+      transform: translateY(-5px) scale(1.02);
+    }
+    .project.unidocs .logo {
+      font-size: 2.5rem;
+      color: var(--orange);
+      margin-bottom: 24px;
+      background: none;
+      border: none;
+      box-shadow: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      position: static;
+    }
+    .project-desc {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      background: rgba(35,35,35,0.98);
+      color: var(--orange);
+      font-size: 1.1rem;
+      font-weight: 500;
+      font-family: 'Inter', sans-serif;
+      padding: 22px 18px 18px 18px;
+      border-radius: 0 0 20px 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      text-align: center;
+      z-index: 3;
+      line-height: 1.4;
+    }
+    .project.unidocs:hover .project-desc {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .project.locked {
+      background: var(--light-gray);
+      cursor: not-allowed;
+      position: relative;
+    }
+    .project.locked .lock {
+      font-size: 3.5rem;
+      color: #888;
+      margin-bottom: 18px;
+      filter: drop-shadow(0 2px 8px #0008);
+    }
+    .project.locked .coming {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      background: rgba(35,35,35,0.98);
+      color: #bbb;
+      font-size: 1.1rem;
+      font-weight: 500;
+      font-family: 'Inter', sans-serif;
+      padding: 22px 18px 18px 18px;
+      border-radius: 0 0 20px 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      text-align: center;
+      z-index: 3;
+    }
+    .project.locked:hover .coming {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .contact {
+      width: 100%;
+      text-align: center;
+      color: #aaa;
+      font-size: 1.2rem;
+      font-family: 'Inter', sans-serif;
+      padding: 40px 0 18px 0;
+      border-top: 1px solid #333;
+      letter-spacing: 0.03em;
+      position: relative;
+      z-index: 2;
+    }
+    .contact a {
+      color: var(--orange);
+      text-decoration: none;
+      font-weight: 600;
+      margin-left: 8px;
+      transition: color 0.2s;
+    }
+    .contact a:hover {
+      color: #fff;
+      text-shadow: 0 2px 8px #ff7a1a88;
+    }
+    
+    @media (max-width: 900px) {
+      .projects {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 28px;
+        padding: 0 20px;
+      }
+      .project {
+        width: 180px;
+        height: 180px;
+      }
+      .title { font-size: 2.8rem; }
+      .subtitle { font-size: 1.8rem; }
+    }
+    @media (max-width: 600px) {
+      .title { 
+        font-size: 2.1rem; 
+        margin-top: 40px;
+        padding: 0 20px;
+      }
+      .subtitle { 
+        font-size: 1.2rem; 
+        padding: 0 20px;
+      }
+      .projects { 
+        grid-template-columns: 1fr; 
+        gap: 18px; 
+        padding: 0 20px;
+        max-width: 100%;
+      }
+      .project { 
+        width: 100%; 
+        max-width: 320px; 
+        height: 120px; 
+      }
+      .project.unidocs .logo-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+      }
+      .project.unidocs .logo {
+        font-size: 1.6rem;
+        margin-bottom: 0;
+        max-width: 2.2em;
+        overflow: hidden;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+      }
+      .project.unidocs .desc-btns {
+        flex-direction: row;
+        gap: 8px;
+        justify-content: center;
+        align-items: center;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      .project.unidocs .desc-tooltip {
+        min-width: 120px;
+        max-width: 90vw;
+        font-size: 0.92rem;
+        padding: 10px 6px;
+        text-align: center;
+        left: 50%;
+        transform: translateX(-50%) translateY(-18px);
+      }
+      .loader-title {
+        font-size: 2.5rem;
+      }
+      .loader-bar {
+        width: 250px;
+      }
+    }
+    @media (max-width: 400px) {
+      .title { font-size: 1.8rem; }
+      .subtitle { font-size: 1rem; }
+      .project-desc, .coming {
+        font-size: 0.9rem;
+        padding: 16px 14px 14px 14px;
+      }
+    }
+    .project.unidocs .desc-tooltip {
+      position: absolute;
+      left: 50%;
+      bottom: 100%;
+      transform: translateX(-50%) translateY(-18px);
+      background: var(--dark);
+      color: var(--orange);
+      border-radius: 14px;
+      box-shadow: 0 4px 24px #0008;
+      padding: 18px 22px;
+      font-size: 1.05rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s;
+      min-width: 220px;
+      max-width: 320px;
+      text-align: center;
+      z-index: 10;
+      display: block;
+    }
+    .project.unidocs:hover .desc-tooltip,
+    .project.unidocs:focus-within .desc-tooltip {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(-28px);
+    }
+    .project.unidocs .desc-btns {
+      position: static;
+      top: auto;
+      left: auto;
+      transform: none;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 6px;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 11;
+      transition: opacity 0.3s;
+    }
+    .project.unidocs:hover .desc-btns,
+    .project.unidocs:focus-within .desc-btns {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .project.unidocs .desc-btns a {
+      display: inline-block;
+      padding: 7px 16px;
+      border-radius: 6px;
+      background: var(--orange);
+      color: var(--white);
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      text-decoration: none;
+      box-shadow: 0 2px 8px #ff7a1a33;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    }
+    .project.unidocs .desc-btns a:hover {
+      background: #fff;
+      color: var(--orange);
+      box-shadow: 0 2px 16px #ff7a1a55;
+    }
+    @media (max-width: 900px) {
+      .project.unidocs .desc-tooltip {
+        min-width: 160px;
+        max-width: 90vw;
+        font-size: 0.95rem;
+        padding: 12px 10px;
+      }
+      .project.unidocs .desc-btns {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="particles" id="particles"></div>
+  <div class="loader">
+    <div class="loader-title">Union</div>
+    <div class="loader-bar"><div class="loader-bar-inner"></div></div>
+  </div>
+  <div class="main">
+    <div class="title">Union Affiliate</div>
+    <div class="subtitle">Projects By Maksim Dunaev</div>
+    <div class="projects">
+      <!-- Unidocs -->
+      <div class="project unidocs" id="unidocs-block" tabindex="0">
+        <div class="logo-row">
+          <div class="desc-btns">
+            <a href="https://drive.google.com/file/d/1lmQT4-W58RWMLXwoFLb6fcbSMELHDwEO/view?usp=sharing" target="_blank">Скачать</a>
+            <a href="https://unionaffiliate.featurebase.app/dashboard/roadmap" target="_blank">RoadMap</a>
+          </div>
+          <div class="logo">📊</div>
+        </div>
+        <div class="desc-tooltip">
+          Плагин для интеграции Google Sheets с Adobe Premiere Pro. Автоматизация маркеров, статусов и комментариев прямо из таблицы.
+        </div>
+      </div>
+      <!-- Locked projects -->
+      <div class="project locked">
+        <div class="lock">🔒</div>
+        <div class="coming">Coming Soon</div>
+      </div>
+      <div class="project locked">
+        <div class="lock">🔒</div>
+        <div class="coming">Coming Soon</div>
+      </div>
+      <div class="project locked">
+        <div class="lock">🔒</div>
+        <div class="coming">Coming Soon</div>
+      </div>
+      <div class="project locked">
+        <div class="lock">🔒</div>
+        <div class="coming">Coming Soon</div>
+      </div>
+      <div class="project locked">
+        <div class="lock">🔒</div>
+        <div class="coming">Coming Soon</div>
+      </div>
+    </div>
+    <div class="contact">
+      Contact — Telegram <a href="https://t.me/nig_ward" target="_blank">@nig_ward</a>
+    </div>
+  </div>
+  <script>
+    // Создание частиц
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 20;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 6 + 's';
+        particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        particlesContainer.appendChild(particle);
+      }
+    }
+    
+
+    
+    // Анимация загрузки
+    const loaderBar = document.querySelector('.loader-bar-inner');
+    let progress = 0;
+    const duration = 5000; // 5 секунд
+    const step = 20;
+    
+    function animateLoader() {
+      progress += step;
+      loaderBar.style.width = Math.min(progress / duration * 100, 100) + '%';
+      if (progress < duration) {
+        setTimeout(animateLoader, step);
+      } else {
+        document.body.classList.add('loaded');
+        // Создаем частицы
+        createParticles();
+        // Плавное появление блоков
+        setTimeout(() => {
+          document.querySelectorAll('.project').forEach((el, i) => {
+            setTimeout(() => el.classList.add('visible'), 120 * i);
+          });
+
+        }, 400);
+      }
+    }
+    
+    animateLoader();
+    
+    // Интерактивность при наведении на проекты
+    document.querySelectorAll('.project').forEach(project => {
+      project.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-5px) scale(1.02)';
+      });
+      
+      project.addEventListener('mouseleave', function() {
+        if (!this.classList.contains('unidocs')) {
+          this.style.transform = 'translateY(0) scale(1)';
+        }
+      });
+    });
+  </script>
+</body>
+</html> 
