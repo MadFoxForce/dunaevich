@@ -187,20 +187,20 @@
       transform: translateY(0) scale(1);
       transition: opacity 0.7s, transform 0.7s;
     }
-    .project.unidocs {
+    .project.unidocs, .project.stocker {
       background: var(--dark);
       border: 3px solid var(--gray);
       position: relative;
       z-index: 1;
       overflow: visible;
     }
-    .project.unidocs:hover {
+    .project.unidocs:hover, .project.stocker:hover {
       border: 3px solid var(--orange);
       box-shadow: 0 0 0 6px #ff7a1a33, 0 4px 32px #0006;
       z-index: 2;
       transform: translateY(-5px) scale(1.02);
     }
-    .project.unidocs .logo {
+    .project.unidocs .logo, .project.stocker .logo {
       font-size: 2.5rem;
       color: var(--orange);
       margin-bottom: 24px;
@@ -323,7 +323,7 @@
         max-width: 320px; 
         height: 120px; 
       }
-      .project.unidocs .logo-row {
+      .project.unidocs .logo-row, .project.stocker .logo-row {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -331,7 +331,7 @@
         gap: 8px;
         width: 100%;
       }
-      .project.unidocs .logo {
+      .project.unidocs .logo, .project.stocker .logo {
         font-size: 1.6rem;
         margin-bottom: 0;
         max-width: 2.2em;
@@ -340,7 +340,11 @@
         justify-content: center;
         align-items: center;
       }
-      .project.unidocs .desc-btns {
+      .project.unidocs .logo img, .project.stocker .logo img {
+        width: 50px !important;
+        height: 50px !important;
+      }
+      .project.unidocs .desc-btns, .project.stocker .desc-btns {
         flex-direction: row;
         gap: 8px;
         justify-content: center;
@@ -348,7 +352,7 @@
         margin-top: 0;
         margin-bottom: 0;
       }
-      .project.unidocs .desc-tooltip {
+      .project.unidocs .desc-tooltip, .project.stocker .desc-tooltip {
         min-width: 120px;
         max-width: 90vw;
         font-size: 0.92rem;
@@ -372,7 +376,7 @@
         padding: 16px 14px 14px 14px;
       }
     }
-    .project.unidocs .desc-tooltip {
+    .project.unidocs .desc-tooltip, .project.stocker .desc-tooltip {
       position: absolute;
       left: 50%;
       bottom: 100%;
@@ -395,12 +399,14 @@
       display: block;
     }
     .project.unidocs:hover .desc-tooltip,
-    .project.unidocs:focus-within .desc-tooltip {
+    .project.unidocs:focus-within .desc-tooltip,
+    .project.stocker:hover .desc-tooltip,
+    .project.stocker:focus-within .desc-tooltip {
       opacity: 1;
       pointer-events: auto;
       transform: translateX(-50%) translateY(-28px);
     }
-    .project.unidocs .desc-btns {
+    .project.unidocs .desc-btns, .project.stocker .desc-btns {
       position: static;
       top: auto;
       left: auto;
@@ -415,11 +421,13 @@
       transition: opacity 0.3s;
     }
     .project.unidocs:hover .desc-btns,
-    .project.unidocs:focus-within .desc-btns {
+    .project.unidocs:focus-within .desc-btns,
+    .project.stocker:hover .desc-btns,
+    .project.stocker:focus-within .desc-btns {
       opacity: 1;
       pointer-events: auto;
     }
-    .project.unidocs .desc-btns a {
+    .project.unidocs .desc-btns a, .project.stocker .desc-btns a {
       display: inline-block;
       padding: 7px 16px;
       border-radius: 6px;
@@ -432,19 +440,19 @@
       box-shadow: 0 2px 8px #ff7a1a33;
       transition: background 0.2s, color 0.2s, box-shadow 0.2s;
     }
-    .project.unidocs .desc-btns a:hover {
+    .project.unidocs .desc-btns a:hover, .project.stocker .desc-btns a:hover {
       background: #fff;
       color: var(--orange);
       box-shadow: 0 2px 16px #ff7a1a55;
     }
     @media (max-width: 900px) {
-      .project.unidocs .desc-tooltip {
+      .project.unidocs .desc-tooltip, .project.stocker .desc-tooltip {
         min-width: 160px;
         max-width: 90vw;
         font-size: 0.95rem;
         padding: 12px 10px;
       }
-      .project.unidocs .desc-btns {
+      .project.unidocs .desc-btns, .project.stocker .desc-btns {
         flex-direction: column;
         gap: 10px;
       }
@@ -465,20 +473,32 @@
       <div class="project unidocs" id="unidocs-block" tabindex="0">
         <div class="logo-row">
           <div class="desc-btns">
-            <a href="https://drive.google.com/file/d/1lmQT4-W58RWMLXwoFLb6fcbSMELHDwEO/view?usp=sharing" target="_blank">Скачать</a>
+            <a href="https://drive.google.com/file/d/12iQBXOt_eEMnQAheIofjM4CeZgVA371Y/view?usp=sharing" target="_blank">Скачать</a>
             <a href="https://unionaffiliate.featurebase.app/dashboard/roadmap" target="_blank">RoadMap</a>
           </div>
-          <div class="logo">📊</div>
+          <div class="logo">
+            <img src="icon1.png" alt="Unidocs" style="width: 80px; height: 80px; object-fit: contain;">
+          </div>
         </div>
         <div class="desc-tooltip">
           Плагин для интеграции Google Sheets с Adobe Premiere Pro. Автоматизация маркеров, статусов и комментариев прямо из таблицы.
         </div>
       </div>
-      <!-- Locked projects -->
-      <div class="project locked">
-        <div class="lock">🔒</div>
-        <div class="coming">Coming Soon</div>
+      <!-- Stocker -->
+      <div class="project stocker" id="stocker-block" tabindex="0">
+        <div class="logo-row">
+          <div class="desc-btns">
+            <a href="https://drive.google.com/file/d/1AuB7dGiEOIh1jPMtYZ1ufFTQVGRK7YzH/view?usp=sharing" target="_blank">Скачать</a>
+          </div>
+          <div class="logo">
+            <img src="icon.png" alt="Stocker" style="width: 80px; height: 80px; object-fit: contain;">
+          </div>
+        </div>
+        <div class="desc-tooltip">
+          Stocker приложение для упрощенного подбора стоковых видео-материалов в ВСЛ.
+        </div>
       </div>
+      <!-- Locked projects -->
       <div class="project locked">
         <div class="lock">🔒</div>
         <div class="coming">Coming Soon</div>
@@ -552,7 +572,7 @@
       });
       
       project.addEventListener('mouseleave', function() {
-        if (!this.classList.contains('unidocs')) {
+        if (!this.classList.contains('unidocs') && !this.classList.contains('stocker')) {
           this.style.transform = 'translateY(0) scale(1)';
         }
       });
